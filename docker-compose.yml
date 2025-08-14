@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+    laravel:
+        build: .
+        container_name: laravel-app
+        volumes:
+            - .:/var/www
+        depends_on:
+            - postgres
+        networks:
+            - laravel-net
+
+    postgres:
+        image: postgres:15
+        container_name: postgres-db
+        restart: always
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: laravel_login
+        ports:
+            - "5432:5432"
+        networks:
+            - laravel-net
+
+networks:
+    laravel-net:
+        driver: bridge
